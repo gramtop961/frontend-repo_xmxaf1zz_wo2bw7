@@ -1,14 +1,12 @@
 import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import Sections from './components/Sections'
 import Footer from './components/Footer'
+import AnimatedRoutes from './components/AnimatedRoutes'
 
 function App() {
   return (
-    <div className="min-h-screen bg-white text-slate-900">
+    <div className="min-h-screen bg-black text-slate-200 selection:bg-yellow-400/30 selection:text-yellow-200">
       <Navbar />
-      <Hero />
-      <Sections />
+      <AnimatedRoutes />
       <Footer />
     </div>
   )

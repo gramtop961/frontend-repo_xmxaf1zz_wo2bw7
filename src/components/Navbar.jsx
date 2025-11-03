@@ -1,67 +1,46 @@
-import { useState } from 'react'
-import { Home, Info, Package, Wrench, Phone } from 'lucide-react'
+import { Link, NavLink, useLocation } from 'react-router-dom'
+import { Home, Info, Package, Wrench, Phone, Sparkles } from 'lucide-react'
+
+const NavItem = ({ to, icon: Icon, label }) => (
+  <NavLink
+    to={to}
+    className={({ isActive }) =>
+      `flex items-center gap-2 px-3 py-2 rounded-md text-sm transition-colors ` +
+      (isActive
+        ? 'text-yellow-300 bg-yellow-400/10'
+        : 'text-slate-300 hover:text-yellow-200 hover:bg-white/5')
+    }
+  >
+    <Icon size={16} />
+    <span>{label}</span>
+  </NavLink>
+)
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false)
-
-  const navItems = [
-    { href: '#home', label: 'Home', icon: Home },
-    { href: '#about', label: 'About Us', icon: Info },
-    { href: '#products', label: 'Products', icon: Package },
-    { href: '#services', label: 'Services', icon: Wrench },
-    { href: '#contact', label: 'Contacts', icon: Phone },
-  ]
-
+  const location = useLocation()
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur bg-white/70 border-b border-slate-200/60">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <a href="#home" className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 shadow-lg shadow-blue-600/30" />
-            <span className="font-semibold tracking-tight text-slate-800">TechSaaS</span>
-          </a>
+    <header className="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-black/40 bg-black/60 border-b border-white/10">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
+          <Link to="/" className="flex items-center gap-2">
+            <div className="h-8 w-8 rounded-md bg-gradient-to-br from-yellow-400 to-amber-600 grid place-items-center shadow-[0_0_30px_-8px_rgba(250,204,21,0.9)]">
+              <Sparkles size={18} className="text-black" />
+            </div>
+            <span className="font-semibold tracking-tight text-slate-100">VibeTech</span>
+          </Link>
 
-          <nav className="hidden md:flex items-center gap-1">
-            {navItems.map(({ href, label, icon: Icon }) => (
-              <a
-                key={href}
-                href={href}
-                className="inline-flex items-center gap-2 px-3 py-2 rounded-md text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition"
-              >
-                <Icon className="h-4 w-4" />
-                <span>{label}</span>
-              </a>
-            ))}
+          <nav className="hidden md:flex items-center gap-2">
+            <NavItem to="/" icon={Home} label="Home" />
+            <NavItem to="/about" icon={Info} label="About" />
+            <NavItem to="/products" icon={Package} label="Products" />
+            <NavItem to="/services" icon={Wrench} label="Services" />
+            <NavItem to="/contacts" icon={Phone} label="Contact" />
           </nav>
 
-          <button
-            onClick={() => setOpen((s) => !s)}
-            className="md:hidden inline-flex items-center justify-center p-2 rounded-md border border-slate-300 text-slate-700 hover:bg-slate-100"
-            aria-label="Toggle Menu"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-        </div>
-
-        {open && (
-          <div className="md:hidden pb-4">
-            <div className="grid gap-1">
-              {navItems.map(({ href, label, icon: Icon }) => (
-                <a
-                  key={href}
-                  href={href}
-                  onClick={() => setOpen(false)}
-                  className="inline-flex items-center gap-2 px-3 py-2 rounded-md text-slate-700 hover:text-slate-900 hover:bg-slate-100 transition"
-                >
-                  <Icon className="h-4 w-4" />
-                  <span>{label}</span>
-                </a>
-              ))}
-            </div>
+          <div className="md:hidden text-slate-300 text-xs">
+            {location.pathname.replace('/', '') || 'home'}
           </div>
-        )}
+        </div>
       </div>
     </header>
   )
